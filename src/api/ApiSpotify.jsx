@@ -6,8 +6,8 @@ export default function InformationCalls() {
   const [searchResult, setSearchResult] = useState([]);
 
   const tokenURL = "https://accounts.spotify.com/api/token";
-  const clientId = process.env.REACT_APP_CLIENT_ID;
-  const secretKey = process.env.REACT_APP_SECRET_KEY;
+  const clientId = import.meta.env.VITE_API_CLIENT_ID;
+  const secretKey = import.meta.env.VITE_API_SECRET_KEY;
   const credentials = btoa(`${clientId}:${secretKey}`);
   //solicitud del token
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function InformationCalls() {
   }, [credentials]);
 
   
-
+//solicitud de datos introducidos en input search
   async function getSearch() {
     const queryEncode = `?q=${encodeURIComponent(searchInput)}&type=track&limit=15`;
     const searchUrl = "https://api.spotify.com/v1/search";
