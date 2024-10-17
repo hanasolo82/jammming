@@ -102,16 +102,18 @@ h4 {
   min-width: 32.7rem;
   border-radius: 1rem;
   border: 0.4rem solid black;
+  margin-bottom: 0.2rem;
 }
 .track-image {
   
   width: 8rem;
-  border-top-left-radius: 1rem;
-  border-bottom-left-radius: 1rem;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
 }
-/*.track-text {
+.track-text {
   
-}*/
+  min-width: 25rem;
+}
 .track-artists {
   
   text-align: center;

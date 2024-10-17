@@ -70,13 +70,21 @@ async function getSearch() {
     console.log(error);
   }
 }
-console.log("Valor de searchInput:", searchInput);
+
 /*Search bar props and states */
 function handleChange(e) {
   setSearchInput(e.target.value)
 }
-console.log(searchResult)
-
+/**pasar objeto como una props */
+const tracks = searchResult.map(item => {
+  return (
+    <Track 
+      key={item.id}
+      {...item}
+    />
+  )
+})
+console.log("app component:", tracks)
   return (
     <div className='body-container'>
       <header className='header'>
@@ -92,11 +100,11 @@ console.log(searchResult)
       <div className='main-container '>
           <div className='results-container'>
             <h2 className='results-title'>Results</h2>
-              <Track />
+              {tracks}
           </div>
           <div className='track-list-container'>
           <h2>Tracklist</h2>
-              <Track />
+              {/*poner lista agregada */}
           </div>
            
         </div>
