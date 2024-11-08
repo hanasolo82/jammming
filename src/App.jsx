@@ -1,28 +1,29 @@
 import React,{ useState, useEffect } from 'react'
-import './App.css'
+import {nanoid} from 'nanoid';
 import SearchBar from './components/SearchBar';
 import Track from './components/Track';
 import data from './api/data';
-
-
+import SearchResults from './components/SearchResults';
+import Tracklist from "./components/Tracklist";
 
 export default function App() {
 /* ejemplo extraccion de datos */
 const url = data.album.images[0].url
 const track = data.album.name
 const artists = data.album.artists[0].name
-
+// ----------------Estados-------------------------------------------------
 const [accessToken, setAccessToken] = useState("");
 const [searchInput, setSearchInput] = useState("");
 const [searchResult, setSearchResult] = useState([]);
-
+const [tracklist, setTracklist] = useState([]);
+//---------Variables-------------------------------------------------------
 const tokenURL = "https://accounts.spotify.com/api/token";
 const clientId = import.meta.env.VITE_API_CLIENT_ID;
 const secretKey = import.meta.env.VITE_API_SECRET_KEY;
 const credentials = btoa(`${clientId}:${secretKey}`);
 
 
-//solicitud del token
+//solicitud del token-----------------------------------------------------
 useEffect(() => {
 async function tokenAccess() {
   try {
@@ -49,7 +50,7 @@ async function tokenAccess() {
 tokenAccess();  
 }, [credentials]);
 
-//solicitud de datos de input search
+//solicitud de datos de input search--------------------------------------------
 async function getSearch() {
   const queryEncode = `q=${encodeURIComponent(searchInput)}&type=track&limit=15`;
   const searchUrl = "https://api.spotify.com/v1/search?";
@@ -81,10 +82,16 @@ const tracks = searchResult.map(item => {
     <Track 
       key={item.id}
       {...item}
+      addToTrackList={() => addToTrackList(item)}
     />
   )
 })
-console.log("app component:", tracks)
+function addToTrackList(track) {
+  
+  setSearchResult(oldResult => oldResult.filter(item => item.id !== track.id))
+  
+}
+
   return (
     <div className='body-container'>
       <header className='header'>
@@ -95,19 +102,20 @@ console.log("app component:", tracks)
               value={searchInput}
               onChangeInput={handleChange}
               onGetSearch={getSearch}
+              
           />
       </header>
-      <div className='main-container '>
-          <div className='results-container'>
-            <h2 className='results-title'>Results</h2>
-              {tracks}
-          </div>
-          <div className='track-list-container'>
-          <h2>Tracklist</h2>
-              {/*poner lista agregada */}
-          </div>
-           
-        </div>
+      <section className='main-container '>  
+          <SearchResults
+              results={tracks}
+              
+          />
+          
+          <Tracklist
+              tracks={tracklist}
+          
+          />
+        </section>
     </div>
   )
 }

@@ -83,12 +83,17 @@ h4 {
 }
 /*----------------results----------------------*/
 .results-container {
-  border-right: 01rem solid black;
+  
   text-align: center;
   padding-right: 1rem;
 }
-.results-title {
-  text-decoration: underline;
+@media only screen and (min-width: 542px) {
+  .results-container {
+    border-right: 01rem solid black;
+    text-align: center;
+    padding-right: 1rem;
+}
+
 }
 /*---------------tracklist-----------------------*/
 .track-list-container {
@@ -113,6 +118,7 @@ h4 {
 .track-text {
   
   min-width: 25rem;
+  max-width: 25rem
 }
 .track-artists {
   

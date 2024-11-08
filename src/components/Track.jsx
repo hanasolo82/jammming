@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Track({name, artists, album}) {
+export default function Track({ name, artists, album, addToTrackList}) {
 const maxLetters = 14  
 const artistName = artists?.[0].name;
 const myImage = "public\dario-veronesi-_mEZtQzcpTA-unsplash.jpg";
@@ -17,7 +17,7 @@ const trackName = name
                 <h3 className='track' title={name}>{trackName}</h3>
                 <h4 className='track-artists'>{artistName}</h4>
               </div>
-              <button className='track-btn'>+</button>
+              <button className='track-btn' onClick={() => addToTrackList({name, artists, album })}>+</button>
         </div>
     )
 }
