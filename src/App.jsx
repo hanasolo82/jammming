@@ -76,22 +76,40 @@ async function getSearch() {
 function handleChange(e) {
   setSearchInput(e.target.value)
 }
-/**pasar objeto como una props */
-const tracks = searchResult.map(item => {
+/**pasar objeto como una props para componente searchResults------------------- */
+const tracksResults = searchResult.map(item => {
   return (
     <Track 
       key={item.id}
       {...item}
-      addToTrackList={() => addToTrackList(item)}
+      handleAddTrack={() => handleAddTrack(item)}
     />
   )
 })
-function addToTrackList(track) {
+const tracklistMap = tracklist.map(item => {
+  return (
+    <Track 
+    key={item.id} 
+    {...item}
+    isAdded={tracklist.some(song => song.id === item.id)}
+    handleSusTrack={() => handleSusTrack(item)}
+     />
+  )
+})
+  
+
+//-------Añade a la tracklist------------------------------------
+function handleAddTrack(track) {
   
   setSearchResult(oldResult => oldResult.filter(item => item.id !== track.id))
-  
+  setTracklist(oldTracklist => [...oldTracklist, track])
 }
-
+//-------Elimina de la trackList-------------------------------
+function handleSusTrack(track) {
+  
+  setTracklist(oldTracklist => oldTracklist.filter(item => item.id !== track.id))
+  setSearchResult(oldResult => [...oldResult, track])
+}
   return (
     <div className='body-container'>
       <header className='header'>
@@ -107,12 +125,12 @@ function addToTrackList(track) {
       </header>
       <section className='main-container '>  
           <SearchResults
-              results={tracks}
+              tracksResults={tracksResults}
               
           />
           
           <Tracklist
-              tracks={tracklist}
+              tracks={tracklistMap}
           
           />
         </section>
