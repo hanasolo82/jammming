@@ -1,8 +1,11 @@
 import React from "react";
 
 export default function Track({ name, artists, album, handleAddTrack, isAdded, handleSusTrack}) {
-const maxLetters = 14  
+const maxLetters = 10
 const artistName = artists?.[0].name;
+const artistNameSlice = artistName ? artistName.length > maxLetters 
+? artistName.slice(0, maxLetters) + "..."
+: artistName : "Not Adviable Artist";
 const myImage = "public\dario-veronesi-_mEZtQzcpTA-unsplash.jpg";
 const imageUrl =  album?.images[0]?.url ? album?.images[0]?.url :  myImage;
 const trackName = name
@@ -14,8 +17,8 @@ const trackName = name
         <div className='track-container'>
               <img className='track-image' src={imageUrl}/>
               <div className='track-text'>
-                <h3 className='track' title={name}>{trackName}</h3>
-                <h4 className='track-artists'>{artistName}</h4>
+                <h3 className='track-artists' title={artistName}>{artistNameSlice}</h3>
+                <h4 className='track' title={name}>{trackName}</h4>
               </div>
               {!isAdded ?
               <button 

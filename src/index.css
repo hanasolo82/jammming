@@ -52,7 +52,7 @@ h4 {
   border: 1rem solid black;
   
 }
-.input-search:placeholder-shown {
+.input-search::placeholder {
   text-align: center;
   font-family: 'Tanker', sans-serif;
   font-size: 3rem;
@@ -78,27 +78,48 @@ h4 {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
+  align-items: start;
+  margin: 1rem 0;
+  
+
 }
 /*----------------results----------------------*/
 .results-container {
-  
+  border: 01rem solid black;
   text-align: center;
-  padding-right: 1rem;
-}
-@media only screen and (min-width: 542px) {
-  .results-container {
-    border-right: 01rem solid black;
-    text-align: center;
-    padding-right: 1rem;
+  padding: 1rem;
+  height: 147.4rem;
 }
 
-}
 /*---------------tracklist-----------------------*/
-.track-list-container {
-  padding-left: 1rem;
+.playlist-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: cewnter;
   text-align: center;
+  padding: 1rem;
+  border: 1px solid;
+  min-width: 40rem;
+  height: 147.4rem;
+  border: 01rem solid black;
+  
+}
+.playlist-input {
+  
+  border: none;
+  border: 1px solid;
+}
+.playlist-input::placeholder {
+  color: black;
+  text-align: center;
+  border: 1px solid;
+  
+}
+.playlist-input:focus {
+  /* outline: none;
+*/  
+     text-align: center;
 }
 /*---------------track---------------------------*/
 .track-container {
