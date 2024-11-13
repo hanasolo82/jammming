@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react'
+import { useState } from 'react'
 import SearchBar from './components/SearchBar';
 import Track from './components/Track';
 import SearchResults from './components/SearchResults';
@@ -24,29 +24,7 @@ console.log(apiData.search)
 
 // ------------envio de lista de canciones a spotify----------------------------------------
 
-async function createPlaylist() {
-  const tracksUri = tracklist.map(item => `spotify:track:${item.id}`)
-  const playlistData = {
-    name: playlist.name,
-    description: playlist.description,
-    public: playlist.public
-  };
-  try {
-    const userId = await getUserId(accessToken); 
-    if (!userId) throw new Error("User ID no encontrado");
-    const playlistArr = await fetchWebApi(`v1/users/${userId}/playlists`, 'POST', playlistData)
-    const playlistId = playlistArr.id;
-    await fetchWebApi(
-      `v1/playlists/${playlistId}/tracks?uris=${tracksUri.join(',')}`,
-      'POST'
-    );
-  
-    return playlistArr;
-  } catch (error) {alert("error en la solicitud")
 
-
-  }
-};
 //---------manejar el cambio de nombre de la lista---------------
 function handleNameChange(e) {
     const {name, value} = e.target
@@ -122,7 +100,7 @@ function handleSusTrack(track) {
             value={playlist.name}
             playListName={playlist.name}
             onChange={handleNameChange}
-            createPlaylist={createPlaylist}
+            
             
             />
         </section>
