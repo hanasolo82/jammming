@@ -1,79 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { 
+  redirectToAuthCodeFlow,
+  getAccessToken,
+  getSearch,
+ } from "./apiFunctions";
 
-export default function InformationCalls() {
-  const [accessToken, setAccessToken] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
 
-  const tokenURL = "https://accounts.spotify.com/api/token";
+export default  function Api({setApiData, searchInput}) {
+
   const clientId = import.meta.env.VITE_API_CLIENT_ID;
   const secretKey = import.meta.env.VITE_API_SECRET_KEY;
-  const credentials = btoa(`${clientId}:${secretKey}`);
-  //solicitud del token
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+
   useEffect(() => {
-  async function tokenAccess() {
-    try {
-      const response = await fetch(tokenURL, {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${credentials}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          grant_type: "client_credentials",
-        }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setAccessToken(data.access_token);
+    console.log("Código de la URL:", code);
+    async function fetchData() {
+      if (!code) {
+        redirectToAuthCodeFlow(clientId);
       } else {
-        console.error("Error fetching token:", response.statusText);
+        // aqui se para la funcion hasta que llamamos a Api---------------y redirectToAuthCodeFlow devuelva un codigo
+        
+        const token = await getAccessToken(clientId, code);
+        console.log("Código obtenido para el token:", code);
+        console.log("Token obtenido:", );
+        const search = searchInput ? await getSearch(searchInput, token) : []
+         
+        setApiData({token, search});
       }
-    } catch (error) {
-      console.error("Error:", error);
     }
-  }
-  tokenAccess();  
-  }, [credentials]);
-
   
-//solicitud de datos introducidos en input search
-  async function getSearch() {
-    const queryEncode = `?q=${encodeURIComponent(searchInput)}&type=track&limit=15`;
-    const searchUrl = "https://api.spotify.com/v1/search";
-    const completeUrl = searchUrl + queryEncode;
-    try {
-      const response = await fetch(completeUrl, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        setSearchResult(jsonResponse.tracks.items);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  return (
-    <div>
-      {/*searchBar */}
-      <input
-        type="text"
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-      ></input>
-      <button onClick={getSearch}>buscar</button>
+    fetchData()
+  }, [token, setApiData, searchInput])	
+  
 
-      {/*results */}
-      <div>
-        {searchResult.map((item) => (
-          <div key={item.id}>
-            <p>Album: {item.album.name}</p>
-            <p>{item.name} de  {item.artists.map(artist => artist.name).join(', ')}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 }
+
+ 

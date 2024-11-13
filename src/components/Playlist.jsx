@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export default function Playlist ({ value, onChange, tracks, playListName, name, onClick}) {
+export default function Playlist ({ value, onChange, tracks, playListName, name, createPlaylist}) {
 
     return (
         <div className='playlist-container'>
@@ -13,7 +13,7 @@ export default function Playlist ({ value, onChange, tracks, playListName, name,
                 name={name}
 
                 />
-            <button className='create-btn'onClick={onClick}>Create List</button>
+            <button className='create-btn'onClick={createPlaylist}>Create List</button>
             {tracks}  
           </div>
     )
