@@ -8,23 +8,26 @@ import Api from './api/ApiSpotify';
 export default function App() {
 
 // -----------------------------------------------------------------States
-const [apiData, setApiData] = useState({});
+
 const [searchInput, setSearchInput] = useState("");
 const [searchResult, setSearchResult] = useState([]);
+const [isClicked, setIsClicked] = useState(false);
+const [sendList, setSendList] = useState(false);
 const [tracklist, setTracklist] = useState([]);
 const [playlist, setPlaylist] = useState({
       "name": "Playlist",
       "description": "Playlist created by me whith my own App",
       "public": false,
 })
-
-console.log(apiData.search)
-
-
-
+function handleIsClicked() {
+  setIsClicked(prevClicked => !prevClicked )
+}
 // ------------envio de lista de canciones a spotify----------------------------------------
 
-
+function handleSendList() {
+  setSendList(prevSet => !prevSet)
+  
+}
 //---------manejar el cambio de nombre de la lista---------------
 function handleNameChange(e) {
     const {name, value} = e.target
@@ -58,8 +61,8 @@ const tracklistMap = tracklist.map(item => {
      />
   )
 })
-  
-
+ //---------------------------------trackUri------------------- 
+const tracksUri = tracklist.map(item => `spotify:track:${item.id}`) 
 //-------Añade a la tracklist------------------------------------
 function handleAddTrack(track) {
   
@@ -75,10 +78,12 @@ function handleSusTrack(track) {
   return (
     <div className='body-container'>
       <Api 
-      setApiData={setApiData}
-    searchInput={searchInput}
-      
-    
+      setSearchResult={setSearchResult}
+      searchInput={searchInput}
+      isClicked={isClicked}
+      sendList={sendList}
+      playlist={playlist}
+      tracksUri={tracksUri}
        />
       <header className='header'>
         <h1>Jammming</h1>
@@ -87,7 +92,7 @@ function handleSusTrack(track) {
               typeInput='text'
               value={searchInput}
               onChangeInput={handleChange}
-              
+              handleIsClicked={handleIsClicked}
               
           />
       </header>
@@ -100,7 +105,7 @@ function handleSusTrack(track) {
             value={playlist.name}
             playListName={playlist.name}
             onChange={handleNameChange}
-            
+            handleSendList={handleSendList}
             
             />
         </section>

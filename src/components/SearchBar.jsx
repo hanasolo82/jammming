@@ -15,7 +15,7 @@ export default function SearchBar(props) {
           <br/>
           <button 
             className='button-search'
-            onClick={props.onGetSearch}
+            onClick={props.handleIsClicked}
             >Search</button>
         </div>
     )
