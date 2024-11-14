@@ -35,7 +35,7 @@ export default function Api({ setSearchResult, searchInput, isClicked, sendList,
   async function getSearch(searchInput) {
     const queryEncode = `q=${encodeURIComponent(
       searchInput
-    )}&type=track&limit=3`;
+    )}&type=track&limit=10`;
     const searchUrl = "https://api.spotify.com/v1/search?";
     const completeUrl = searchUrl + queryEncode;
     const token = localStorage.getItem('access_token')
@@ -79,18 +79,24 @@ export default function Api({ setSearchResult, searchInput, isClicked, sendList,
         `v1/users/${user_id}/playlists`, 'POST', {
           ...playlist
       })
-      console.log("Playlist creada:", playlistfetch);
-      await fetchWebApi(
-        `v1/playlists/${playlistfetch.id}/tracks?uris=${tracksUri.join(',')}`,
-        'POST'
-
-      );
+      if ( playlistfetch.id === null){
+          console.log("select something")
+      }else {
+        await fetchWebApi(
+          `v1/playlists/${playlistfetch.id}/tracks?uris=${tracksUri.join(',')}`,
+          'POST'
+        );
+      }
+     
       
       return playlistfetch;
       
     }
     useEffect(() => {
-      createPlaylist(tracksUri, playlist);
+      if(sendList && tracksUri.length > 0) {
+        createPlaylist(tracksUri, playlist);
+      }
+      
       
     }, [sendList])
     
